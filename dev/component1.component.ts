@@ -8,7 +8,7 @@ import {LoggingService} from "./services/logging.service"
             <button class="btn btn-default" (click)="onLog(message.value)">Send</button>
         </div>
     `,
-    providers:[LoggingService]
+    providers: [LoggingService]
 })
 
 export class Component1Component {
