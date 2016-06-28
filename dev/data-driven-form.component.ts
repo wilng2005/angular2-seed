@@ -8,18 +8,18 @@ import {FormBuilder,Validators,ControlGroup} from "@angular/common";
     <form [ngFormModel]="myForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="email">Email</label>
-        <input [ngFormControl]="myForm.controls['email']" type="text" class="form-control" id="email" placeholder="Email"  >
-        <span class="text-danger">Not valid</span>
+        <input [ngFormControl]="myForm.controls['email']" type="text" class="form-control" id="email" placeholder="Email" #email="ngForm" >
+        <span class="text-danger" *ngIf="!email.valid">Not valid</span>
       </div> 
       <div class="form-group">
         <label for="password">Password</label>
-        <input [ngFormControl]="myForm.controls['password']" type="text" class="form-control" id="password" placeholder="Password"  >
-        <span class="text-danger">Not valid</span>
+        <input [ngFormControl]="myForm.controls['password']" type="text" class="form-control" id="password" placeholder="Password" #password="ngForm"   >
+        <span class="text-danger" *ngIf="!password.valid">Not valid</span>
       </div>
       <div class="form-group">
         <label for="confirmPassword">Confirm Password</label>
-        <input [ngFormControl]="myForm.controls['confirmPassword']" type="text" class="form-control" id="confirmPassword" placeholder="Confirm Password"  >
-        <span class="text-danger">Not valid</span>
+        <input [ngFormControl]="myForm.controls['confirmPassword']" type="text" class="form-control" id="confirmPassword" placeholder="Confirm Password"  #confirmPassword="ngForm"  >
+        <span class="text-danger" *ngIf="!confirmPassword.valid">Not valid</span>
       </div>
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
@@ -35,7 +35,7 @@ export class DataDrivenFormComponent implements OnInit{
     constructor(private _formBuilder:FormBuilder){}
 
     onSubmit(form){
-        console.log(this.myForm);
+        this.user=this.myForm.value;
     }
 
     ngOnInit():any{
