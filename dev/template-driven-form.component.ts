@@ -28,7 +28,7 @@ import {Component} from "@angular/core";
     `
 })
 
-export class TemplateDriverFormComponent{
+export class TemplateDrivenFormComponent{
     user={email:"",password:""}
     onSubmit(form){
         this.user.email=form.value['email'];
