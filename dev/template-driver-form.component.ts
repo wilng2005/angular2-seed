@@ -6,25 +6,33 @@ import {Component} from "@angular/core";
     <h2>Sign-up Form</h2>
     <form (ngSubmit)="onSubmit(f)" #f="ngForm">
       <div class="form-group">
-        <label for="mail">Mail</label>
-        <input ngControl="email" type="text" class="form-control" id="mail" placeholder="Mail" required>
+        <label for="email">Email</label>
+        <input ngControl="email" type="text" class="form-control" id="email" placeholder="Email" required #email="ngForm">
+        <span class="text-danger" *ngIf="!email.valid">Not valid</span>
       </div> 
       <div class="form-group">
         <label for="password">Password</label>
-        <input ngControl="password" type="text" class="form-control" id="password" placeholder="Password" required>
+        <input ngControl="password" type="text" class="form-control" id="password" placeholder="Password" required #password="ngForm">
+        <span class="text-danger" *ngIf="!password.valid">Not valid</span>
       </div>
       <div class="form-group">
-        <label for="confirm-password">Confirm Password</label>
-        <input ngControl="confirm-password" type="text" class="form-control" id="confirm-password" placeholder="Confirm Password" required>
+        <label for="confirmPassword">Confirm Password</label>
+        <input ngControl="confirmPassword" type="text" class="form-control" id="confirmPassword" placeholder="Confirm Password" required #confirmPassword="ngForm">
+        <span class="text-danger" *ngIf="!confirmPassword.valid">Not valid</span>
       </div>
-      <button type="submit" class="btn btn-default">Submit</button>
+      <button type="submit" class="btn btn-default" [disabled]="!f.valid || password.value!=confirmPassword.value">Submit</button>
     </form>
+    <h2>You Submitted</h2>
+    <div>Email:{{user.email}}</div>
+    <div>Password:{{user.password}}</div>
     `
 })
 
 export class TemplateDriverFormComponent{
-
+    user={email:"",password:""}
     onSubmit(form){
-        console.log(form.value);
+        this.user.email=form.value['email'];
+        this.user.password=form.controls['password'].value;
+
     }
 }
