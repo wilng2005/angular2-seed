@@ -1,7 +1,9 @@
-import {Component} from '@angular/core';
+import {Component,OnInit} from '@angular/core';
 import {ShoppingListNewItemComponent} from './shopping-list-new-item.component';
 import {ShoppingListItemComponent} from './shopping-list-item.component';
 import {ListItem} from "../list-item";
+import {ShoppingListService} from "./shopping-list.service";
+
 @Component({
     selector: 'shopping-list',
     template: `
@@ -11,7 +13,7 @@ import {ListItem} from "../list-item";
             <h3 class="panel-title">New Item</h3>
           </div>
           <div class="panel-body">
-            <shopping-list-new-item (itemAdded)="onItemAdded($event)"></shopping-list-new-item>
+            <shopping-list-new-item></shopping-list-new-item>
           </div>
         </div>
         <div class="panel panel-default">
@@ -22,7 +24,7 @@ import {ListItem} from "../list-item";
              <div class="list">
                    <h4>Output List</h4>
                    <ul class="list-group">
-                      <li class="list-group-item" *ngFor="#listItem of listItems" (click)="onSelect(listItem)">{{listItem.name}} ({{listItem.amount}})</li>
+                      <li class="list-group-item" *ngFor="let listItem of listItems" (click)="onSelect(listItem)">{{listItem.name}} ({{listItem.amount}})</li>
                     </ul>
             </div>
           </div>
@@ -33,28 +35,30 @@ import {ListItem} from "../list-item";
                 <h3 class="panel-title">New Item</h3>
               </div>
               <div class="panel-body">
-                <shopping-list-item [item]="selectedItem" (removed)="onRemove($event)"></shopping-list-item>
+                <shopping-list-item [item]="selectedItem" (removed)="onRemove()"></shopping-list-item>
                 </div>
             </div>
         </div>
     `,
-    directives: [ShoppingListNewItemComponent,ShoppingListItemComponent]
+    directives: [ShoppingListNewItemComponent,ShoppingListItemComponent],
+    providers: [ShoppingListService]
 })
 
-export class ShoppingListComponent {
-    listItems = new Array<ListItem>();
+export class ShoppingListComponent implements OnInit{
+    listItems:Array<ListItem>;
     selectedItem: ListItem;
 
-    onItemAdded(item:ListItem) {
-        this.listItems.push({name: item.name, amount: item.amount});
-    }
+    constructor(private _shoppingListService:ShoppingListService){}
 
     onSelect(item:ListItem){
         console.log("onSelect");
         this.selectedItem=item;
     }
-    onRemove(item:ListItem){
-        this.listItems.splice(this.listItems.indexOf(item),1);
+
+    ngOnInit():any{
+        this.listItems=this._shoppingListService.getItems();
+    }
+    onRemove(){
         this.selectedItem=null;
     }
 }
