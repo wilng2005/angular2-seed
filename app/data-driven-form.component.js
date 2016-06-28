@@ -12,6 +12,11 @@ System.register(["@angular/core", "@angular/common"], function(exports_1, contex
     };
     var core_1, common_1;
     var DataDrivenFormComponent;
+    function hasNumbers(control) {
+        if (!control.value.match('\\d+')) {
+            return { noNumbers: true };
+        }
+    }
     return {
         setters:[
             function (core_1_1) {
@@ -32,7 +37,10 @@ System.register(["@angular/core", "@angular/common"], function(exports_1, contex
                 DataDrivenFormComponent.prototype.ngOnInit = function () {
                     this.myForm = this._formBuilder.group({
                         'email': ['', common_1.Validators.required],
-                        'password': ['', common_1.Validators.required],
+                        'password': ['', common_1.Validators.compose([
+                                common_1.Validators.required,
+                                hasNumbers
+                            ])],
                         'confirmPassword': ['', common_1.Validators.required]
                     });
                 };
